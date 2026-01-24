@@ -16,7 +16,7 @@
 - **Crawler**: Requests, BeautifulSoup4
 
 ## 프로젝트 구조
-- news-dashboard 
+- NewsDashboard
     - static/ # CSS 및 정적 파일
         - templates/ # HTML 템플릿
     - app.py # web server
