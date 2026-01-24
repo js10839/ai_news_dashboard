@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI 뉴스 요약 대시보드</title>
+    
+    <link href="{{ url_for('static', path='style.css') }}" rel="stylesheet">
+    
+</head>
+<body>
+    <div class="container">
+        <h1>오늘의 AI 뉴스 요약</h1>
+        
+        {% for news in news_list %} # jinaja2 사용
+        <div class="card">
+            <div>
+                <span class="badge">News</span>
+                <a href="{{ news.url }}" target="_blank" class="title">{{ news.title }}</a>
+            </div>
+            <div class="summary">
+                <strong>AI 3줄 요약:</strong><br>
+                {{ news.summary }}
+            </div>
+            <div class="meta">
+                수집 시간: {{ news.created_at }}
+            </div>
+        </div>
+        {% endfor %}
+
+    </div>
+</body>
+</html>
