@@ -16,6 +16,16 @@ def init_db():
             created_at DATETIME DEFAULT CURRENT_TIMESTAMP
         )
     ''')
+    cursor.execute('''
+        CREATE TABLE IF NOT EXISTS users (
+            id INTEGER PRIMARY KEY AUTOINCREMENT,
+            username TEXT UNIQUE NOT NULL,
+            pw_hash TEXT NOT NULL,
+            email TEXT,
+            full_name TEXT,
+            disabled BOOLEAN DEFAULT 0
+        )
+    ''')
     conn.commit()
     conn.close()
     print("Dtabase initialized.")

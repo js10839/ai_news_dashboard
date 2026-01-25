@@ -1,10 +1,12 @@
-from fastapi import FastAPI, Request
-from fastapi.responses import HTMLResponse
+from fastapi import FastAPI, Request, Depends
+from fastapi.responses import HTMLResponse, RedirectResponse
 from fastapi.templating import Jinja2Templates
 from fastapi.staticfiles import StaticFiles
+from login import router as auth_router, get_current_user_from_cookie
 import sqlite3
 
 app = FastAPI()
+app.include_router(auth_router, prefix='/auth', tags=['auth'])
 app.mount('/static', StaticFiles(directory='static'), name='static')
 templates = Jinja2Templates(directory='templates')
 
@@ -24,7 +26,13 @@ def GetAllNews():
 #     return {'message': 'Welcome to the News Summary API'}
 
 @app.get('/', response_class=HTMLResponse)
-def ReadNews(request: Request):
+def ReadNews(
+    request: Request,
+    username: str = Depends(get_current_user_from_cookie)
+):
+    if username is None:
+        return RedirectResponse(url="/auth/login", status_code=303)
+    
     news_list = GetAllNews()
     return templates.TemplateResponse(
         'index.html',
