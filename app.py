@@ -19,9 +19,9 @@ def GetAllNews():
 
     return rows
 
-@app.get('/')
-def ReadRoot():
-    return {'message': 'Welcome to the News Summary API'}
+# @app.get('/')
+# def ReadRoot():
+#     return {'message': 'Welcome to the News Summary API'}
 
 @app.get('/News', response_class=HTMLResponse)
 def ReadNews(request: Request):
