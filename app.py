@@ -28,10 +28,10 @@ def GetAllNews():
 @app.get('/', response_class=HTMLResponse)
 def ReadNews(
     request: Request,
-    username: str = Depends(get_current_user_from_cookie)
+    user: str = Depends(get_current_user_from_cookie)
 ):
-    if username is None:
-        return RedirectResponse(url="/auth/login", status_code=303)
+    if user is None:
+        return RedirectResponse(url="/auth/login", status_code=302)
     
     news_list = GetAllNews()
     return templates.TemplateResponse(
