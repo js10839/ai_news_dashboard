@@ -23,7 +23,7 @@ def GetAllNews():
 # def ReadRoot():
 #     return {'message': 'Welcome to the News Summary API'}
 
-@app.get('/News', response_class=HTMLResponse)
+@app.get('/', response_class=HTMLResponse)
 def ReadNews(request: Request):
     news_list = GetAllNews()
     return templates.TemplateResponse(
