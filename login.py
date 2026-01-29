@@ -3,7 +3,7 @@ from datetime import datetime, timedelta, timezone
 from os import getenv
 from typing import Annotated, Optional
 from fastapi import APIRouter, Depends, HTTPException, status, Request, Form
-from fastapi.responses import HTMLResponse, RedirectReponse
+from fastapi.responses import HTMLResponse, RedirectReponses
 from fastapi.templating import Jinja2Templates
 from fastapi.security import OAuth2PasswordBearer, OAuth2PasswordRequestForm
 from passlib.context import CryptContext
@@ -122,17 +122,17 @@ def login(request: Request, username: str = Form(...), password: str = Form(...)
                                           {request: request, 'msg': 'Invalid credentials'})
     access_token = create_access_token(data={'sub': user.username})
 
-    response = RedirectReponse(url='/', status_code=302)
+    response = RedirectReponses(url='/', status_code=302)
     response.set_cookie(
         key='access_token',
         value=f"Bearer {access_token}",
-        httplonly=True,
+        httponly=True,
         )
     return response
 
 @router.get('/logout')
 def logout():
-    response = RedirectReponse(url='/auth/login', status_code=302)
+    response = RedirectReponses(url='/auth/login', status_code=302)
     response.delete_cookie(key='access_token')
     return response
     
