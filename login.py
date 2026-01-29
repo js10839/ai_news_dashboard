@@ -1,6 +1,6 @@
 # auth.py (새로 생성)
 from datetime import datetime, timedelta, timezone
-from os import getenv, os
+from os import getenv
 from typing import Annotated, Optional
 from fastapi import APIRouter, Depends, HTTPException, status, Request, Form
 from fastapi.responses import HTMLResponse, RedirectResponse    
@@ -12,9 +12,9 @@ from pydantic import BaseModel
 import sqlite3
 
 # 1. 설정값
-SECRET_KEY = os.getenv("SECRET_KEY", "76957695769576957695769576957695")
-ALGORITHM = os.getenv("ALGORITHM", "HS256")
-ACCESS_TOKEN_EXPIRE_MINUTES = int(os.getenv("ACCESS_TOKEN_EXPIRE_MINUTES", "30"))
+SECRET_KEY = getenv("SECRET_KEY", "my-secret-key-1234")
+ALGORITHM = getenv("ALGORITHM", "HS256")
+ACCESS_TOKEN_EXPIRE_MINUTES = int(getenv("ACCESS_TOKEN_EXPIRE_MINUTES", "30"))
 
 
 # 2. 도구 설정
