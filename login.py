@@ -1,27 +1,27 @@
 # auth.py (새로 생성)
 from datetime import datetime, timedelta, timezone
-from os import getenv
+from os import getenv, os
 from typing import Annotated, Optional
 from fastapi import APIRouter, Depends, HTTPException, status, Request, Form
-from fastapi.responses import HTMLResponse, RedirectReponses
+from fastapi.responses import HTMLResponse, RedirectResponse    
 from fastapi.templating import Jinja2Templates
 from fastapi.security import OAuth2PasswordBearer, OAuth2PasswordRequestForm
 from passlib.context import CryptContext
 from jose import JWTError, jwt
 from pydantic import BaseModel
-import templates
 import sqlite3
 
 # 1. 설정값
-SECRET_KEY = getenv("SECRET_KEY")
-ALGORITHM = getenv("ALGORITHM")
-ACCESS_TOKEN_EXPIRE_MINUTES = int(getenv("ACCESS_TOKEN_EXPIRE_MINUTES"))
+SECRET_KEY = os.getenv("SECRET_KEY", "76957695769576957695769576957695")
+ALGORITHM = os.getenv("ALGORITHM", "HS256")
+ACCESS_TOKEN_EXPIRE_MINUTES = int(os.getenv("ACCESS_TOKEN_EXPIRE_MINUTES", "30"))
 
 
 # 2. 도구 설정
 pwd_context = CryptContext(schemes=["bcrypt"], deprecated="auto")
 oauth2_scheme = OAuth2PasswordBearer(tokenUrl="/auth/token")
 router = APIRouter()
+templates = Jinja2Templates(direcctory='templates')
 
 
 # 3. 데이터 모델
@@ -122,7 +122,7 @@ def login(request: Request, username: str = Form(...), password: str = Form(...)
                                           {request: request, 'msg': 'Invalid credentials'})
     access_token = create_access_token(data={'sub': user.username})
 
-    response = RedirectReponses(url='/', status_code=302)
+    response = RedirectResponse(url='/', status_code=302)
     response.set_cookie(
         key='access_token',
         value=f"Bearer {access_token}",
@@ -132,7 +132,7 @@ def login(request: Request, username: str = Form(...), password: str = Form(...)
 
 @router.get('/logout')
 def logout():
-    response = RedirectReponses(url='/auth/login', status_code=302)
+    response = RedirectResponse(url='/auth/login', status_code=302)
     response.delete_cookie(key='access_token')
     return response
     
