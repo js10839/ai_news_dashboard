@@ -9,6 +9,7 @@ from fastapi.security import OAuth2PasswordBearer, OAuth2PasswordRequestForm
 from passlib.context import CryptContext
 from jose import JWTError, jwt
 from pydantic import BaseModel
+from typing import Optional
 import sqlite3
 
 # 1. 설정값
@@ -21,7 +22,7 @@ ACCESS_TOKEN_EXPIRE_MINUTES = int(getenv("ACCESS_TOKEN_EXPIRE_MINUTES", "30"))
 pwd_context = CryptContext(schemes=["bcrypt"], deprecated="auto")
 oauth2_scheme = OAuth2PasswordBearer(tokenUrl="/auth/token")
 router = APIRouter()
-templates = Jinja2Templates(direcctory='templates')
+templates = Jinja2Templates(directory='templates')
 
 
 # 3. 데이터 모델
@@ -118,8 +119,7 @@ def login_page(request: Request):
 def login(request: Request, username: str = Form(...), password: str = Form(...)):
     user = get_user(username=username)
     if not user or not verify_password(password, user.hashed_password):
-        return templates.TemplateResponse('login.html', 
-                                          {request: request, 'msg': 'Invalid credentials'})
+        return templates.TemplateResponse("login.html", {"request": request, "error": "Invalid credentials"})
     access_token = create_access_token(data={'sub': user.username})
 
     response = RedirectResponse(url='/', status_code=302)
@@ -141,7 +141,8 @@ def logout():
 class UserCreate(BaseModel):
     username: str
     password: str
-    email: str = None
+    email: Optional[str] | None = None
+
 
 @router.post("/signup")
 def signup(user: UserCreate):
