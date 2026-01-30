@@ -42,3 +42,21 @@ button {
 button:hover { 
     background-color: #0056b3; 
 }
+
+.auth-nav {
+margin-top: 12px;
+font-size: 14px;
+text-align: center;
+}
+
+.auth-nav a {
+margin-left: 6px;
+text-decoration: underline;
+}
+
+.auth-msg {
+color: #d33;
+margin: 0 0 12px 0;
+text-align: center;
+}
+  

@@ -9,11 +9,21 @@
 <body>
     <div class="login-box">
         <h2>Login</h2>
+
+        {% if msg %}
+          <p class="auth-msg">{{ msg }}</p>
+        {% endif %}
+
         <form action="/auth/login" method="post">
             <input type="text" name="username" placeholder="Username" required>
             <input type="password" name="password" placeholder="Password" required>
             <button type="submit">Sign In</button>
         </form>
+
+        <div class="auth-nav">
+            <span>New here?</span>
+            <a href="/auth/signup">Create an account</a>
+        </div>
     </div>
 </body>
 </html>
