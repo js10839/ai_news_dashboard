@@ -143,9 +143,12 @@ class UserCreate(BaseModel):
     password: str
     email: Optional[str] | None = None
 
+@router.get('/signup', response_class=HTMLResponse)
+def signup_page(request: Request):
+    return templates.TemplateResponse('signup.html', {'request':request})
 
 @router.post("/signup")
-def signup(user: UserCreate):
+def signup(request: Request, user: UserCreate):
     conn = sqlite3.connect('news.db')
     cursor = conn.cursor()
     try:
@@ -154,7 +157,8 @@ def signup(user: UserCreate):
                        (user.username, hashed_pw, user.email))
         conn.commit()
     except sqlite3.IntegrityError:
-        raise HTTPException(status_code=400, detail="Username already exists")
+        return templates.TemplateResponse("signup.html", {"request": request, "msg": "Username already exists"})
     finally:
         conn.close()
-    return {"msg": "User created successfully"}
+
+    return RedirectResponse(url="/auth/login", status_code=302)
