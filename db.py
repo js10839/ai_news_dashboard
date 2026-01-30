@@ -20,7 +20,7 @@ def init_db():
         CREATE TABLE IF NOT EXISTS users (
             id INTEGER PRIMARY KEY AUTOINCREMENT,
             username TEXT UNIQUE NOT NULL,
-            pw_hash TEXT NOT NULL,
+            hashed_password TEXT NOT NULL,
             email TEXT,
             full_name TEXT,
             disabled BOOLEAN DEFAULT 0

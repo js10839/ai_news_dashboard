@@ -19,7 +19,7 @@ def RunDashboard():
             print("-> 수집 실패, 건너뜁니다.")
             continue
 
-        print(f'제목: {news_data['title']}')
+        print(f'제목: {news_data["title"]}')
 
         print('2. 뉴스 요약...')
         news_summary = summarizer.NewsSummarizer(news_data['content'])
