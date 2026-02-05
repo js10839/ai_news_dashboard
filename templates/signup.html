@@ -14,7 +14,7 @@
       <p style="color:red; margin-bottom:12px;">{{ msg }}</p>
     {% endif %}
 
-    <form action="/auth/signup" method="post">
+    <form action="/signup" method="post">
       <input type="text" name="username" placeholder="Username" required>
       <input type="email" name="email" placeholder="Email (optional)">
       <input type="password" name="password" placeholder="Password (min 8 chars)" required>
@@ -22,7 +22,7 @@
     </form>
 
     <p style="margin-top:12px;">
-      Already have an account? <a href="/auth/login">Login</a>
+      Already have an account? <a href="/login">Login</a>
     </p>
   </div>
 </body>
