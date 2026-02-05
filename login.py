@@ -132,7 +132,7 @@ def login(request: Request, username: str = Form(...), password: str = Form(...)
 
 @router.get('/logout')
 def logout():
-    response = RedirectResponse(url='/login', status_code=302)
+    response = RedirectResponse(url='/auth/login', status_code=302)
     response.delete_cookie(key='access_token')
     return response
     
@@ -161,4 +161,4 @@ def signup(request: Request, user: UserCreate):
     finally:
         conn.close()
 
-    return RedirectResponse(url="/login", status_code=302)
+    return RedirectResponse(url="/auth/login", status_code=302)
