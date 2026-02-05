@@ -20,7 +20,7 @@ ACCESS_TOKEN_EXPIRE_MINUTES = int(getenv("ACCESS_TOKEN_EXPIRE_MINUTES", "30"))
 
 # 2. 도구 설정
 pwd_context = CryptContext(schemes=["bcrypt"], deprecated="auto")
-oauth2_scheme = OAuth2PasswordBearer(tokenUrl="/auth/token")
+oauth2_scheme = OAuth2PasswordBearer(tokenUrl="/token")
 router = APIRouter()
 templates = Jinja2Templates(directory='templates')
 
@@ -132,7 +132,7 @@ def login(request: Request, username: str = Form(...), password: str = Form(...)
 
 @router.get('/logout')
 def logout():
-    response = RedirectResponse(url='/auth/login', status_code=302)
+    response = RedirectResponse(url='/login', status_code=302)
     response.delete_cookie(key='access_token')
     return response
     
@@ -161,4 +161,4 @@ def signup(request: Request, user: UserCreate):
     finally:
         conn.close()
 
-    return RedirectResponse(url="/auth/login", status_code=302)
+    return RedirectResponse(url="/login", status_code=302)
