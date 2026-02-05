@@ -5,11 +5,10 @@ from typing import Annotated, Optional
 from fastapi import APIRouter, Depends, HTTPException, status, Request, Form
 from fastapi.responses import HTMLResponse, RedirectResponse    
 from fastapi.templating import Jinja2Templates
-from fastapi.security import OAuth2PasswordBearer, OAuth2PasswordRequestForm
+from fastapi.security import OAuth2PasswordBearer
 from passlib.context import CryptContext
 from jose import JWTError, jwt
 from pydantic import BaseModel
-from typing import Optional
 import sqlite3
 
 # 1. 설정값
@@ -148,13 +147,18 @@ def signup_page(request: Request):
     return templates.TemplateResponse('signup.html', {'request':request})
 
 @router.post("/signup")
-def signup(request: Request, user: UserCreate):
+def signup(
+    request: Request,
+    username: str = Form(...),
+    password: str = Form(...),
+    email: str | None = Form(None),
+):
     conn = sqlite3.connect('news.db')
     cursor = conn.cursor()
     try:
-        hashed_pw = pwd_context.hash(user.password)
+        hashed_pw = pwd_context.hash(password)
         cursor.execute("INSERT INTO users (username, hashed_password, email) VALUES (?, ?, ?)", 
-                       (user.username, hashed_pw, user.email))
+                       (username, hashed_pw, email))
         conn.commit()
     except sqlite3.IntegrityError:
         return templates.TemplateResponse("signup.html", {"request": request, "msg": "Username already exists"})
