@@ -118,10 +118,10 @@ def login_page(request: Request):
 def login(request: Request, username: str = Form(...), password: str = Form(...)):
     user = get_user(username=username)
     if not user or not verify_password(password, user.hashed_password):
-        return templates.TemplateResponse("login.html", {"request": request, "error": "Invalid credentials"})
+        return templates.TemplateResponse("login.html", {"request": request, "msg": "Invalid username or password"})
     access_token = create_access_token(data={'sub': user.username})
 
-    response = RedirectResponse(url='/', status_code=302)
+    response = RedirectResponse(url='/dashboard', status_code=302)
     response.set_cookie(
         key='access_token',
         value=f"Bearer {access_token}",
